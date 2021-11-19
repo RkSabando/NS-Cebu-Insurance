@@ -38,7 +38,6 @@ export class UsersService {
 
   usersWithPolicies$ = combineLatest([this.users$, this.WithPolicies$])
     .pipe(
-      tap(data => console.log('test', data)),
       map(([users, withPolicies]) => 
         users.filter( u => withPolicies.find( (p: any) => p.email === u.email))
       )
@@ -46,9 +45,8 @@ export class UsersService {
 
   usersWithoutPolicies$ = combineLatest([this.users$, this.WithPolicies$])
     .pipe(
-      tap(data => console.log('test', data)),
       map(([users, withPolicies]) => 
-        users.filter( u =>  !withPolicies.find( (p: any) => p.email === u.email))
+        users.filter( u => !(withPolicies.find( (p: any) => p.email === u.email)))
       )
   );
 }

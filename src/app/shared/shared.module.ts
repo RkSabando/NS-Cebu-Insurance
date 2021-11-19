@@ -11,12 +11,17 @@ import { CustomInputComponent } from './components/custom-input/custom-input.com
 import { CustomDatatableComponent } from './components/custom-datatable/custom-datatable.component';
 import { CustomSelectComponent } from './components/custom-select/custom-select.component';
 import { MatSelectModule } from '@angular/material/select';
+import { LoaderComponent } from './components/loader/loader.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+
 
 const Materials = [
   MatDialogModule,
   MatIconModule,
   MatMenuModule,
-  MatSelectModule
+  MatSelectModule,
+  MatProgressSpinnerModule
 ]
 
 const Components = [
@@ -24,11 +29,12 @@ const Components = [
   SkeletonLoaderComponent,
   CustomInputComponent,
   CustomDatatableComponent,
-  CustomSelectComponent
+  CustomSelectComponent,
+  LoaderComponent
 ]
 
 @NgModule({
-  declarations: [Components],
+  declarations: [Components, LoaderComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

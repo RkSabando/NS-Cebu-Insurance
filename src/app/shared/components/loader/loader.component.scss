@@ -1,0 +1,7 @@
+@import 'src/assets/styles/variables.scss';
+
+::ng-deep {
+    .mat-progress-spinner circle, .mat-spinner circle {
+        stroke: $primary-red;
+    }
+}

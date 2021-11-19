@@ -1,7 +1,7 @@
 import { NonNullAssert } from '@angular/compiler';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject,combineLatest } from 'rxjs';
-import { concatMap, debounceTime, distinctUntilChanged, exhaustMap, filter, map, tap } from 'rxjs/operators';
+import { debounceTime, distinct, distinctUntilChanged, exhaustMap, filter, map, tap } from 'rxjs/operators';
 import { clientFilters } from 'src/app/shared/constants/clients-filter';
 import { User } from 'src/app/shared/model/user-model';
 
@@ -19,10 +19,11 @@ export class ClientsComponent implements OnInit {
   searchText$ = this.searchSubject.asObservable();
   users$ = this.userService.users$;
   userWithPolicies$ = this.userService.usersWithPolicies$;
+  userWithoutPolicies$ = this.userService.usersWithoutPolicies$;
   filters = clientFilters;
   selectedFilter:any = null;
 
-  filterEventSubject = new BehaviorSubject(null);
+  filterEventSubject = new BehaviorSubject<any>(null);
   filterEvent$ = this.filterEventSubject.asObservable();
 
   currentFilterSubject = new BehaviorSubject(null);
@@ -47,34 +48,43 @@ export class ClientsComponent implements OnInit {
 
   changeFilter$ = this.currentFilter$.pipe(
     distinctUntilChanged()
-  ).subscribe( data => this.selectedFilter = data);
+  ).subscribe( (data: any) => {
+    if(data?.filters) {
+      this.selectedFilter = data;
+    } else {
+      this.selectedFilter = null;
+      this.filterEventSubject.next('all');
+    } 
+  });
 
-  filterByKey$ = combineLatest([this.filterEvent$, this.users$])
+  filterByKey$ = combineLatest([
+      this.filterEvent$, 
+      this.filterByText$,
+      this.userWithPolicies$,
+      this.userWithoutPolicies$
+    ])
     .pipe(
-      tap(data => console.log('data1', data)),
-      map((filter, users) => ({user: users})),
-      tap(data => console.log('data2', data))
+      map(([filter, users, withPolicy, withoutPolicy]) => {
+        if(filter === 'all') {
+          return users;
+        } else {
+          if(filter.filterBy === 'role') {
+            return users.filter( user => {
+              return filter.value ? user.role === filter.value : true;
+            })
+          } else {
+            return filter.value ? filter.value === 'with' ? withPolicy : withoutPolicy : users;
+          }
+        };
+      })
     );
 
-  // this.filterEvent$.pipe(
-  //   distinctUntilChanged(),
-  //   exhaustMap(
-  //     (filter: any) => {
-  //       return this.users$.pipe(
-  //         map( (user: User[]) => {
-  //           return filter ? this.users$ : user.filter( (u: any) => {
-  //             return filter ? 
-  //             filter.filterBy === 'role' ? u[filter.filterBy] === filter.value : 
-  //             true //for policy filter
-  //             : true;
-  //           })
-  //         })
-  //       )
-  //     }
-  //   )
-  // )
-
-  // filteredList$ = 
+  filteredList$ = combineLatest([this.filterByKey$, this.filterByText$])
+    .pipe(
+      map(([key, text]) => key.filter(
+        k => text.find(t => t.email === k.email)
+      ))
+    );
 
   constructor(
     private userService: UsersService
@@ -83,19 +93,8 @@ export class ClientsComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.filterByText$.subscribe( changes => {
-      console.log('changes', changes);
-    })
-   
-
-    this.userService.WithPolicies$.subscribe( filters => {
-      console.log('WithPolicies', filters);
-    })
-    this.filterByKey$.subscribe( filters => {
-      console.log('filter', filters);
-    })
-    this.userWithPolicies$.subscribe( (changes: any) => {
-      console.log('with policy', changes);
+    this.filteredList$.subscribe( changes => {
+      console.log('changes',changes);
     })
   }
 
@@ -104,8 +103,7 @@ export class ClientsComponent implements OnInit {
   }
 
   changeFilterBy(event: any): void {
-    this.currentFilterSubject.next(event.filters ? event : null);
-    // this.filterEventSubject.next(null);
+    this.currentFilterSubject.next(event);
   }
 
   filterEvent(event: any): void {
