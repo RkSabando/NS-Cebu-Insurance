@@ -1,0 +1,4 @@
+<div class="flex items-center justify-end">
+    <input #searchInput (input)="searchAction(searchInput)" [placeholder]="placeholder" [ngClass]="{'pr-8': search}" type="text">
+    <mat-icon (click)="searchAction(searchInput)" [inline]="true" class="search-icon" aria-hidden="false" >search</mat-icon>
+</div>

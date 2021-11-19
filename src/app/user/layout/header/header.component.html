@@ -1,0 +1,16 @@
+<div class="relative bg-white shadow-sm">
+     <div class="2xl:container px-8 flex justify-between items-center mx-auto">
+       <a [routerLink]="['/']">
+        <img class="header-logo" src="assets/images/angular.png" alt="">
+       </a>
+      <button [matMenuTriggerFor]="menu" #t="matMenuTrigger" type="button" class="text-gray-700 bg-transparent px-0 outline-none focus:outline-none flex items-center">
+        {{ user?.email }}
+        <mat-icon [ngClass]="{'transform rotate-180': t.menuOpen}" class="transition duration-200 icon text-gray-700" aria-hidden="false" >arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" >
+        <a mat-menu-item [routerLink]="[ROUTES.CLIENTS]" routerLinkActive="router-link-active" >Clients</a>
+        <a mat-menu-item [routerLink]="[ROUTES.POLICIES]" routerLinkActive="router-link-active" >Policies</a>
+        <button mat-menu-item>Logout</button>
+      </mat-menu>
+     </div>
+</div>

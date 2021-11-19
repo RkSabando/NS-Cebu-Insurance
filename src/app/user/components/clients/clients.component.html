@@ -1,0 +1,18 @@
+<div class="grid grid-cols-12 gap-4">
+    <div class="col-span-12 lg:col-span-6 xl:col-span-4">
+        <app-custom-input (inputEvent)="searchEvent($event)" [search]="true" [placeholder]="'Search name or email...'"></app-custom-input>
+    </div>
+    <div class="mt-4 col-span-12 grid grid-cols-12 gap-4">
+        <div class="col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2 flex flex-col">
+            <label class="">Filter by:</label>
+            <app-custom-select (selectionChange)="changeFilterBy($event)" class="w-full" shownKey="name" [items]="filters"></app-custom-select>
+        </div>
+        <div *ngIf="selectedFilter" class="col-span-12 sm:col-span-6 lg:col-span-3 xl:col-span-2 flex flex-col">
+            <label class="">{{ selectedFilter?.name }}:</label>
+            <app-custom-select (selectionChange)="filterEvent($event)" [defaultValue]="selectedFilter?.filters[0]" shownKey="name" [items]="selectedFilter?.filters"></app-custom-select>
+        </div>
+    </div>
+
+
+</div>
+

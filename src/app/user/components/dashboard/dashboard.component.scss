@@ -1,0 +1,15 @@
+.dashboard-container {
+    ::ng-deep {
+        .icon {
+            font-size: 70px !important;
+        }   
+    }
+
+    .pulse {
+        transition-duration: 200ms;
+        &:hover {
+            transform: translate(4px, -4px);
+        }
+    }
+}
+

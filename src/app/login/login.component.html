@@ -1,0 +1,23 @@
+<div class="h-screen grid grid-cols-12">
+    <div class="bg-blue-50 col-span-12 md:col-span-8 lg:col-span-5 flex flex-col justify-center items-start px-8 sm:px-16 xl:px-20">
+        <p class="text-gray-700 font-semibold text-xl lg:text-3xl shippori">
+            NS - Cebu Insurance
+        </p>
+        <span class="mb-10 text-gray-400 text-lg">Welcome back, login now to get started.</span>
+        <form (ngSubmit)="onSubmit()" class="flex flex-col w-full" [formGroup]="loginForm">
+            <label for="email">Email:</label>
+            <input [ngClass]="{'error': emailErrorMessage }" id="email" type="email" autocomplete="off" formControlName="email">
+            <!-- <span *ngIf="loginForm.get('email').errors?.email" >Please input a valid email address!</span> -->
+            <span class="error" *ngIf="emailErrorMessage" >{{ emailErrorMessage }}</span>
+
+            <label class="mt-4" for="password">Password:</label>
+            <input [ngClass]="{'error': (loginForm.get('password').dirty || submitted ) && loginForm.get('password').errors }" id="password" type="{{ passType }}" formControlName="password">
+            <span class="error" *ngIf="(loginForm.get('password').dirty || submitted ) && loginForm.get('password').errors" >
+                Password is required!
+            </span>
+
+            <button type="" class="px-20 self-end primary mt-10">Login</button>
+        </form>
+    </div>
+    <div class="hidden md:inline-block md:col-span-4 lg:col-span-7 background-logo"></div>
+</div>

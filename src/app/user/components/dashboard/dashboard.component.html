@@ -1,0 +1,22 @@
+<div class="grid grid-cols-12 dashboard-container gap-8 ">
+    <div [routerLink]="[ROUTE.CLIENTS]" class="pulse col-span-12 cursor-pointer md:col-span-3 rounded overflow-hidden shadow-lg p-10">
+        <p class="text-lg xl:text-2xl shippori primary-color">Clients</p>
+        <div class="flex justify-between items-center">
+            <mat-icon [inline]="true" class="icon primary-color"  aria-hidden="false" >people_alt</mat-icon>
+            <span *ngIf="(users$ | async); else loadingUser" class="primary-color text-5xl">{{ (users$ | async).length }}</span>
+            <ng-template #loadingUser>
+                <app-skeleton-loader class="w-24 h-12 overflow-hidden rounded-lg"></app-skeleton-loader>
+            </ng-template>
+        </div>
+    </div>
+    <div [routerLink]="[ROUTE.CLIENTS]" [queryParams]="{ filter: 'policy' }" class="pulse cursor-pointer col-span-12 md:col-span-3 rounded overflow-hidden shadow-lg p-10">
+        <p class="text-lg xl:text-2xl shippori primary-color">Clients with Policy</p>
+        <div class="flex justify-between items-center">
+            <mat-icon [inline]="true" class="icon primary-color"  aria-hidden="false" >attach_money</mat-icon>
+            <span *ngIf="(usersWithPolicies$ | async); else loadingPolicy" class="primary-color text-5xl">{{ (usersWithPolicies$ | async).length }}</span>
+            <ng-template #loadingPolicy>
+                <app-skeleton-loader class="w-24 h-12 overflow-hidden rounded-lg"></app-skeleton-loader>
+            </ng-template>
+        </div>
+    </div>
+</div>
