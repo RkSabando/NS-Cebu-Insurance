@@ -1,0 +1,21 @@
+
+@import 'src/assets/styles/variables.scss';
+
+::ng-deep {
+    .custom-data-table {
+        .mat-table {
+            min-width: 600px;
+            background: transparent;
+            thead {
+                background: #424242;
+            }
+            .td-empty-state{
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+        }
+        .mat-paginator{ 
+            min-width: 600px;
+        }
+    }
+}

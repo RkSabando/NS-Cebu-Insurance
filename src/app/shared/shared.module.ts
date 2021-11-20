@@ -15,6 +15,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 
@@ -25,7 +26,8 @@ const Materials = [
   MatSelectModule,
   MatProgressSpinnerModule,
   MatTableModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatSortModule
 ]
 
 const Components = [
@@ -38,7 +40,7 @@ const Components = [
 ]
 
 @NgModule({
-  declarations: [Components, LoaderComponent],
+  declarations: [Components],
   imports: [
     CommonModule,
     ReactiveFormsModule,

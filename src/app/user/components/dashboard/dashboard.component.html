@@ -1,5 +1,6 @@
-<div class="grid grid-cols-12 dashboard-container gap-8 ">
-    <div [routerLink]="[ROUTE.CLIENTS]" class="pulse col-span-12 cursor-pointer md:col-span-3 rounded overflow-hidden shadow-lg p-10">
+<div class="grid grid-cols-12 dashboard-container gap-x-4 md:gap-x-8 gap-y-8">
+    <div [routerLink]="[ROUTE.CLIENTS]" class="pulse col-span-12 cursor-pointer md:col-span-6 lg:col-span-4 xl:col-span-3 rounded overflow-hidden shadow-lg p-10">
+        <!-- {{ (users$ | async).length }} -->
         <p class="text-lg xl:text-2xl shippori primary-color">Clients</p>
         <div class="flex justify-between items-center">
             <mat-icon [inline]="true" class="icon primary-color"  aria-hidden="false" >people_alt</mat-icon>
@@ -9,7 +10,7 @@
             </ng-template>
         </div>
     </div>
-    <div [routerLink]="[ROUTE.CLIENTS]" [queryParams]="{ filter: 'policy' }" class="pulse cursor-pointer col-span-12 md:col-span-3 rounded overflow-hidden shadow-lg p-10">
+    <div [routerLink]="[ROUTE.CLIENTS]" [queryParams]="{ filter: 'policy' }" class="pulse cursor-pointer col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 rounded overflow-hidden shadow-lg p-10">
         <p class="text-lg xl:text-2xl shippori primary-color">Clients with Policy</p>
         <div class="flex justify-between items-center">
             <mat-icon [inline]="true" class="icon primary-color"  aria-hidden="false" >attach_money</mat-icon>

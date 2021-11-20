@@ -9,6 +9,7 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { RoleComponent } from './components/role/role.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { SharedModule } from '../shared/shared.module';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SharedModule } from '../shared/shared.module';
     PoliciesComponent,
     ClientsComponent,
     RoleComponent,
-    HeaderComponent
+    HeaderComponent,
+    UserDetailsComponent
   ],
   imports: [
     CommonModule,

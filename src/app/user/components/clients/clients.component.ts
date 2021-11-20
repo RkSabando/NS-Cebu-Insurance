@@ -1,11 +1,11 @@
-import { NonNullAssert } from '@angular/compiler';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject,combineLatest } from 'rxjs';
-import { debounceTime, distinct, distinctUntilChanged, exhaustMap, filter, map, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, exhaustMap, map } from 'rxjs/operators';
 import { clientFilters } from 'src/app/shared/constants/clients-filter';
 import { User } from 'src/app/shared/model/user-model';
 
 import { UsersService } from 'src/app/shared/services/users.service';
+import { clientTableOptions } from './clients-table-options';
 
 @Component({
   selector: 'app-clients',
@@ -13,22 +13,24 @@ import { UsersService } from 'src/app/shared/services/users.service';
   styleUrls: ['./clients.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ClientsComponent implements OnInit {
+export class ClientsComponent {
 
   searchSubject = new BehaviorSubject<string>('');
   searchText$ = this.searchSubject.asObservable();
+  
+  filterEventSubject = new BehaviorSubject<any>(null);
+  filterEvent$ = this.filterEventSubject.asObservable();
+  
+  currentFilterSubject = new BehaviorSubject(null);
+  currentFilter$ = this.currentFilterSubject.asObservable();
+  
   users$ = this.userService.users$;
   userWithPolicies$ = this.userService.usersWithPolicies$;
   userWithoutPolicies$ = this.userService.usersWithoutPolicies$;
-  filters = clientFilters;
+  
   selectedFilter:any = null;
-
-  filterEventSubject = new BehaviorSubject<any>(null);
-  filterEvent$ = this.filterEventSubject.asObservable();
-
-  currentFilterSubject = new BehaviorSubject(null);
-  currentFilter$ = this.currentFilterSubject.asObservable();
-
+  filters = clientFilters;
+  tableOptions = clientTableOptions;
 
   filterByText$ = this.searchText$.pipe(
     debounceTime(300),
@@ -88,15 +90,13 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private userService: UsersService
-  ) { }
+  ) {
+    // this.userService.userDetails$.subscribe(
+   
 
-  
+    // )
 
-  ngOnInit(): void {
-    this.filteredList$.subscribe( changes => {
-      console.log('changes',changes);
-    })
-  }
+   }
 
   searchEvent(text: string): void {
     this.searchSubject.next(text);
@@ -108,6 +108,10 @@ export class ClientsComponent implements OnInit {
 
   filterEvent(event: any): void {
     this.filterEventSubject.next(event);
+  }
+
+  rowClicked(event: User) {
+    this.userService.getUserDetailsSubject.next(event);
   }
 
 }

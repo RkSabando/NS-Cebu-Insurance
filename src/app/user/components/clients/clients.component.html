@@ -2,7 +2,7 @@
     <div class="col-span-12 md:col-span-5 xl:col-span-4">
         <app-custom-input [customClass]="'shadow-lg'" (inputEvent)="searchEvent($event)" [search]="true" [placeholder]="'Search name or email...'"></app-custom-input>
     </div>
-    <div class="col-span-12 md:col-span-7 lg:col-span-5 lg:col-end-13 xl:col-span-4 xl:col-end-13 flex justify-end gap-4">
+    <div class="col-span-12 md:col-span-7 lg:col-span-5 lg:col-end-13 xl:col-span-4 xl:col-end-13 flex flex-col sm:flex-row justify-end gap-4">
         <div [ngClass]="{'order-last': !selectedFilter }" class="w-full md:w-1/2" >
             <app-custom-select [customClass]="'shadow-lg'" [label]="'Filter by'" (selectionChange)="changeFilterBy($event)" shownKey="name" [defaultValue]="filters[0]" [items]="filters"></app-custom-select>
         </div>
@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="mt-4 col-span-12">
-        <app-custom-datatable></app-custom-datatable>
+        <app-custom-datatable (rowClicked)="rowClicked($event)" [items]="filteredList$ | async" [tableOptions]="tableOptions"></app-custom-datatable>
     </div>
 
 

@@ -1,36 +1,29 @@
-<div class="w-full overflow-x-auto rounded bg-white shadow-lg p-5">
-    <table class="w-full rounded" mat-table [dataSource]="dataSource">
+<div class="w-full overflow-x-auto custom-data-table bg-gray-500 rounded-lg shadow-lg">
+  <table  class="w-full rounded" mat-table [dataSource]="dataSource" matSort>
+    <ng-container *ngFor="let header of tableOptions?.thead?.headers"  [matColumnDef]="header?.key">
+      <ng-container *ngIf="header?.sortable; else notSortable">
+        <th mat-header-cell mat-sort-header [mat-sort-header]="header?.key" *matHeaderCellDef> {{ header?.title }} </th>
+      </ng-container>
+      <ng-template #notSortable>
+        <th mat-header-cell *matHeaderCellDef> {{ header?.title }} </th>
+      </ng-template>
+      <td mat-cell *matCellDef="let element" [innerHtml]="header.hasOwnProperty('format') ? sanitize(header.format(element[header.key])) : element[header.key]"> </td>
+    </ng-container>
 
-        <!-- Position Column -->
-        <ng-container matColumnDef="position">
-          <th mat-header-cell *matHeaderCellDef> No. </th>
-          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-        </ng-container>
-    
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
-    
-        <!-- Weight Column -->
-        <ng-container matColumnDef="weight">
-          <th mat-header-cell *matHeaderCellDef> Weight </th>
-          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-        </ng-container>
-    
-        <!-- Symbol Column -->
-        <ng-container matColumnDef="symbol">
-          <th mat-header-cell *matHeaderCellDef> Symbol </th>
-          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-        </ng-container>
-    
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                     showFirstLastButtons 
-                     aria-label="Select page of periodic elements">
-      </mat-paginator>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row [ngClass]="{'cursor-pointer hover:bg-gray-600': tableOptions?.thead?.clickable }" (click)="clickedRow(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell text-center td-empty-state" colspan="9999">
+        {{ firstLoad ? 'Loading...' : 'No results found!' }}
+      </td>
+    </tr>
+  </table>
+  <div [hidden]="!(items?.length)" >
+    <mat-paginator 
+      [length]="dataSource.data?.length"
+      [pageSizeOptions]="[10, 20,50, 100]"
+      showFirstLastButtons 
+      aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
 </div>
