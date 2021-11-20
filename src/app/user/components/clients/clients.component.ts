@@ -38,7 +38,7 @@ export class ClientsComponent implements OnInit {
         return this.users$.pipe(
           map( (user: User[]) => {
             return user.filter( (u: User) => {
-              return text ? (u.name.includes(text) || u.email.includes(text) ): true;
+              return text ? (u.name.toLocaleLowerCase().startsWith(text.toLocaleLowerCase()) || u.email.toLocaleLowerCase().startsWith(text.toLocaleLowerCase()) ): true;
             })
           })
         )
@@ -53,8 +53,8 @@ export class ClientsComponent implements OnInit {
       this.selectedFilter = data;
     } else {
       this.selectedFilter = null;
-      this.filterEventSubject.next('all');
     } 
+    this.filterEventSubject.next(null);
   });
 
   filterByKey$ = combineLatest([
@@ -65,7 +65,7 @@ export class ClientsComponent implements OnInit {
     ])
     .pipe(
       map(([filter, users, withPolicy, withoutPolicy]) => {
-        if(filter === 'all') {
+        if(!filter) {
           return users;
         } else {
           if(filter.filterBy === 'role') {

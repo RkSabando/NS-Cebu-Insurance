@@ -13,6 +13,8 @@ import { CustomSelectComponent } from './components/custom-select/custom-select.
 import { MatSelectModule } from '@angular/material/select';
 import { LoaderComponent } from './components/loader/loader.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
@@ -21,7 +23,9 @@ const Materials = [
   MatIconModule,
   MatMenuModule,
   MatSelectModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatTableModule,
+  MatPaginatorModule
 ]
 
 const Components = [

@@ -3,7 +3,7 @@
        <a [routerLink]="['/']">
         <img class="header-logo" src="assets/images/angular.png" alt="">
        </a>
-      <button [matMenuTriggerFor]="menu" #t="matMenuTrigger" type="button" class="text-gray-700 bg-transparent px-0 outline-none focus:outline-none flex items-center">
+      <button [matMenuTriggerFor]="menu" #t="matMenuTrigger" type="button" class="hidden lg:inline-block text-gray-700 bg-transparent px-0 outline-none focus:outline-none flex items-center">
         {{ user?.email }}
         <mat-icon [ngClass]="{'transform rotate-180': t.menuOpen}" class="transition duration-200 icon text-gray-700" aria-hidden="false" >arrow_drop_down</mat-icon>
       </button>

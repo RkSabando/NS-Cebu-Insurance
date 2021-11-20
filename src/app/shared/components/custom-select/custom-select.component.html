@@ -1,6 +1,6 @@
-<button #buttonTrigger [matMenuTriggerFor]="selectMenu" #trigger="matMenuTrigger" (menuOpened)="opened = trigger.menuOpen" (menuClosed)="opened = trigger.menuOpen" type="button" class="custom-select text-gray-700 bg-transparent px-0 outline-none focus:outline-none flex justify-between items-center w-100">
-    {{ formControl?.value ? formControl.value[shownKey] : placeholder }}
-    <mat-icon [ngClass]="{'transform rotate-180': opened}" class="transition duration-200 icon text-gray-700" aria-hidden="false" >arrow_drop_down</mat-icon>
+<button #buttonTrigger [matMenuTriggerFor]="selectMenu" #trigger="matMenuTrigger" (menuOpened)="opened = trigger.menuOpen" (menuClosed)="opened = trigger.menuOpen" type="button" class="custom-select text-gray-700 bg-white px-0 outline-none focus:outline-none flex justify-between items-center w-100 {{ customClass }}">
+    <span class="text-gray-500 mr-2" *ngIf="label">{{ label }}:</span>{{ formControl?.value ? formControl.value[shownKey] : placeholder }}
+    <mat-icon [ngClass]="{'transform rotate-180': opened}" class="transition duration-200 icon text-gray-700 ml-auto" aria-hidden="false" >arrow_drop_down</mat-icon>
 </button>
 <mat-menu class="dropdown-menu" #selectMenu="matMenu" >
     <button *ngFor="let item of items" mat-menu-item (click)="selectItem(item)" [ngStyle]="{width: getWidth(buttonTrigger)}">{{ item[shownKey] }}</button>

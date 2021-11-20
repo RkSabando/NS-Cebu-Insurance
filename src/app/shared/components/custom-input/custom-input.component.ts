@@ -10,6 +10,7 @@ export class CustomInputComponent implements OnInit {
   @Input() placeholder: string = 'Enter text';
   @Input() disabled: boolean = false;
   @Input() search: boolean = false;
+  @Input() customClass: string = '';
   @Output() inputEvent = new EventEmitter();
 
 
@@ -22,6 +23,13 @@ export class CustomInputComponent implements OnInit {
     if(!this.disabled) {
       this.inputEvent.emit(el.value);
     }
+  }
+
+  preventWhiteSpace(event: any): boolean {
+    if(`${event.target.value}${event.key}`.trim() === '') {
+      return false;
+    }
+    return true;
   }
 
 }

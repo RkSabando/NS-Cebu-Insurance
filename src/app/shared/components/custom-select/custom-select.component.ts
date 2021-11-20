@@ -11,7 +11,9 @@ export class CustomSelectComponent implements OnInit, OnChanges {
   @Input() items: any = [];
   @Input() defaultValue: any;
   @Input() shownKey: string = '';
-  @Input() placeholder: string = 'Select';
+  @Input() placeholder: string = 'Choose item';
+  @Input() label: string = '';
+  @Input() customClass: string = '';
   @Input() disabled: boolean = false;
   @Output() selectionChange = new EventEmitter();
   @ViewChild('buttonTrigger') buttonTrigger!: ElementRef;
