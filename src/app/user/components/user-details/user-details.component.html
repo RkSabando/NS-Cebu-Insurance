@@ -1,1 +1,29 @@
-<p>user-details works!</p>
+<div class="grid grid-cols-12 place-content-center gap-0 sm:gap-4">
+    <button class="absolute h-auto text-2xl top-0 right-2 primary-color" mat-button (click)="dialogRef.close()">&times;</button>
+    <div class="col-span-12 sm:col-span-6 md:col-span-4">
+        <strong>Name: </strong>
+    </div>
+    <div class="mb-4 sm:mb-0 col-span-12 sm:col-span-6 md:col-span-8">
+        {{ data?.user.name }}
+    </div>
+    <div class="col-span-12 sm:col-span-6 md:col-span-4">
+        <strong>Email: </strong>
+    </div>
+    <div class="mb-4 sm:mb-0 col-span-12 sm:col-span-6 md:col-span-8 break-words">
+        {{ data?.user.email }}
+    </div>
+    <div class="col-span-12 sm:col-span-6 md:col-span-4">
+        <strong>Role: </strong>
+    </div>
+    <div class="mb-8 sm:mb-0 col-span-12 sm:col-span-6 md:col-span-8">
+        <!-- {{ data?.user.role }} -->
+        <app-custom-select [enableHistory]="true" [customClass]="'shadow-lg'" (selectionChange)="changeRole($event)" [defaultValue]="defaultValue" shownKey="name" [items]="userRolesOptions"></app-custom-select>
+    </div>
+
+    <div class="col-span-12">
+        <strong>Policies: </strong>
+    </div>
+    <div class="col-span-12">
+        <app-custom-datatable [items]="data?.policies?.value ?? []" [tableOptions]="tableOptions"></app-custom-datatable>
+    </div>
+</div>

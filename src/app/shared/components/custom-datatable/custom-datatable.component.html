@@ -14,7 +14,7 @@
     <tr mat-row [ngClass]="{'cursor-pointer hover:bg-gray-600': tableOptions?.thead?.clickable }" (click)="clickedRow(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
     <tr class="mat-row" *matNoDataRow>
       <td class="mat-cell text-center td-empty-state" colspan="9999">
-        {{ firstLoad ? 'Loading...' : 'No results found!' }}
+        {{ firstLoad ? 'Loading...' :  tableOptions?.emptyMessage ?? 'No results found!' }}
       </td>
     </tr>
   </table>

@@ -1,0 +1,11 @@
+@import '../../../../assets/styles/variables.scss';
+
+::ng-deep {
+    .user-details-modal {
+        .mat-dialog-container {
+            background-color: white;
+            color: $primary-text-color;
+            position: relative;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { distinctUntilChanged, pairwise } from 'rxjs/operators';
 
 @Component({
   selector: 'app-custom-select',
@@ -15,6 +16,7 @@ export class CustomSelectComponent implements OnInit, OnChanges {
   @Input() label: string = '';
   @Input() customClass: string = '';
   @Input() disabled: boolean = false;
+  @Input() enableHistory: boolean = false;
   @Output() selectionChange = new EventEmitter();
   @ViewChild('buttonTrigger') buttonTrigger!: ElementRef;
   opened: boolean = false;
@@ -30,10 +32,19 @@ export class CustomSelectComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.formControl.valueChanges.subscribe(
-      () => {
+    this.formControl.valueChanges
+    .pipe(distinctUntilChanged(),pairwise())
+    .subscribe(
+      ([previousValue, currentValue]) => {
         if(!this.disabled) {
-          this.selectionChange.emit(this.formControl.value);
+          if(this.enableHistory) {
+            this.selectionChange.emit({
+              currentValue: currentValue,
+              previousValue: previousValue
+            });
+          } else {
+            this.selectionChange.emit(currentValue);
+          }
         }
       }
     )

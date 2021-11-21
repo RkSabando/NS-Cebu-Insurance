@@ -113,7 +113,6 @@ export class LoginComponent implements OnInit {
             type: DIALOG_TYPES.ERROR,
             title: 'Error',
             desc: 'Invalid credentials! Please try again!',
-            buttons: ['Ok'],
             timeout: 2000
           }
           this.dialog.openDialog(dialogOptions);

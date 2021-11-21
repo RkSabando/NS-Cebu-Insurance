@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http' 
 import { API_ROUTES } from '../enums/api-routes.enum';
-import { concatMap, filter,withLatestFrom, groupBy, map, mergeMap, reduce, shareReplay, tap, toArray, exhaust, exhaustMap } from 'rxjs/operators'
+import { concatMap, filter,withLatestFrom, groupBy, map, mergeMap, reduce, shareReplay, tap, toArray, exhaust, exhaustMap, distinctUntilChanged, take } from 'rxjs/operators'
 import { StorageService } from './storage.service';
 import { PoliciesService } from './policies.service';
 import { User, UserDetails } from '../model/user-model';
 import { Policy } from '../model/policy-model';
-import { combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDetailsComponent } from 'src/app/user/components/user-details/user-details.component';
 
@@ -27,12 +27,29 @@ export class UsersService {
   ) { }
   policies$ = this.policyService.policies$;
 
+  editUserSubject = new BehaviorSubject<User | null>(null);
+  editUser$ = this.editUserSubject.asObservable();
 
-
-  users$ = this.http.get<User[]>(API_ROUTES.USERS).pipe(
+  userLists$ = this.http.get<User[]>(API_ROUTES.USERS).pipe(
     shareReplay(1),
+    take(1),
     map( (users: any) => users.clients as User[] )
   );
+
+  users$ = combineLatest([this.editUser$.pipe(distinctUntilChanged()), this.userLists$])
+  .pipe(
+    tap(data => console.log('before edit',  data)),
+    map(([edit,users]) => {
+      if(edit) {
+        const userIndex = users.findIndex(u => u.email === edit.email);
+        users[userIndex] = edit;
+        console.log('new user',users);
+        return users;
+      }
+      return users;
+    }),
+    tap(data => console.log('after edit',  data)),
+  )
 
   WithPolicies$ = this.policies$.pipe(
     groupBy(
@@ -61,17 +78,22 @@ export class UsersService {
 
 
 
-  userDetails$ = combineLatest(
-    [this.getUserDetails$, this.users$,this.WithPolicies$]
-  )
-  .pipe(
+  userDetails$ = this.getUserDetails$.pipe(
+    withLatestFrom(this.users$,this.WithPolicies$),
     map(([user, users, withPolicy]) => ({ 
       user: users.find(u => u.id === user.id),
       policies: withPolicy.find( p => p.email === user.email ) ?? null
     }) as UserDetails)
-  ).subscribe( (data: UserDetails) => {
+  )
+    
+  // combineLatest(
+  //   [this.getUserDetails$, ]
+  // )
+  .subscribe( (data: UserDetails) => {
     this.dialog.open(UserDetailsComponent,{
-      data: data
+      data: data,
+      panelClass: 'user-details-modal',
+      disableClose: true
     });
   })
 }

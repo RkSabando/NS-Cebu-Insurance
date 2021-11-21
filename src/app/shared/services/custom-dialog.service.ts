@@ -15,12 +15,13 @@ export class CustomDialogService {
 
   openDialog(
     dialogOptions: DialogOptions,
-    mainAction?: () => void | Promise<void>,
+    mainAction?: () => void | Promise<void>, 
     secondaryAction?: () => void
   ) {
     console.log('dialogOptions', dialogOptions);
     const dialogRef = this.dialog.open(ModalComponent,
       {
+        panelClass: 'custom-dialog',
         data: dialogOptions,
         ...(dialogOptions?.timeout && {disableClose: true})
       },
@@ -33,12 +34,11 @@ export class CustomDialogService {
     });
 
     dialogRef.afterClosed().subscribe( result => {
-      console.log('result',result);
-      // if(result === DIALOG_RESPONSE.ACCEPT) {
-      //   mainAction();
-      // } else if( secondaryAction && result === DIALOG_RESPONSE.CANCEL) {
-      //   secondaryAction();
-      // }
+      if( mainAction && result === DIALOG_RESPONSE.ACCEPT) {
+        mainAction();
+      } else if( secondaryAction && result === DIALOG_RESPONSE.CANCEL) {
+        secondaryAction();
+      }
     });
 
 

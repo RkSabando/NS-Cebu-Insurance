@@ -6,9 +6,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from 'src/app/login/login.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UsersService } from 'src/app/shared/services/users.service';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
+import { HttpConfigInterceptor } from './shared/interceptor/httpconfig.interceptor';
 
 @NgModule({
   declarations: [

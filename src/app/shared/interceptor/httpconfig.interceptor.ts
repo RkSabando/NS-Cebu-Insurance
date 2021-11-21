@@ -9,10 +9,10 @@ import {
 
 import { Observable, throwError } from 'rxjs';
 import { map, catchError, delay } from 'rxjs/operators';
-import { CustomDialogService } from '../shared/services/custom-dialog.service';
-import { DialogOptions } from '../shared/model/dialog-model';
-import { DIALOG_TYPES } from '../shared/enums/dialog.enum';
-import { LoaderService } from '../shared/services/loader.service';
+import { CustomDialogService } from '../services/custom-dialog.service';
+import { DialogOptions } from '../model/dialog-model';
+import { DIALOG_TYPES } from '../enums/dialog.enum';
+import { LoaderService } from '../services/loader.service';
 
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {

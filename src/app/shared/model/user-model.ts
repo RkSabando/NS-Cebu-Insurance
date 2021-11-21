@@ -9,5 +9,8 @@ export interface User {
 
 export interface UserDetails {
     user: User,
-    policy?: Policy[]
+    policies?: {
+        email: string,
+        value: Policy[]
+    }
 }
