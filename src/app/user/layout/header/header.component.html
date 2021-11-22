@@ -3,14 +3,22 @@
        <a [routerLink]="['/']">
         <img class="header-logo" src="assets/images/angular.png" alt="">
        </a>
-      <button [matMenuTriggerFor]="menu" #t="matMenuTrigger" type="button" class="hidden lg:inline-block text-gray-700 bg-transparent px-0 outline-none focus:outline-none flex items-center">
+      <button class="inline-flex lg:hidden  rounded p-1 m-1 border border-gray-300 h-auto border-gray">
+        <mat-icon [matMenuTriggerFor]="menu" #t="matMenuTrigger" [ngClass]="{'transform rotate-90': t.menuOpen}" class="transition duration-200 icon text-gray-700" aria-hidden="false" >menu</mat-icon>
+      </button>
+       
+      <button [matMenuTriggerFor]="menu" #t="matMenuTrigger" type="button" class="hidden lg:inline-flex space-x-2 text-gray-700 bg-transparent px-0 outline-none focus:outline-none items-center">
         {{ user?.email }}
         <mat-icon [ngClass]="{'transform rotate-180': t.menuOpen}" class="transition duration-200 icon text-gray-700" aria-hidden="false" >arrow_drop_down</mat-icon>
       </button>
       <mat-menu #menu="matMenu" >
+        <div class="pb-2 mb-2 border-b-2 border-white inline-block lg:hidden px-3 text-white">
+          <p>Email: </p>
+          {{ user?.email }}
+        </div>
         <a mat-menu-item [routerLink]="[ROUTES.CLIENTS]" routerLinkActive="router-link-active" >Clients</a>
         <a mat-menu-item [routerLink]="[ROUTES.POLICIES]" routerLinkActive="router-link-active" >Policies</a>
-        <button mat-menu-item>Logout</button>
+        <button (click)="logOut()" mat-menu-item>Logout</button>
       </mat-menu>
      </div>
 </div>
