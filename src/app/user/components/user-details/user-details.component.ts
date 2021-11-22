@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { distinctUntilChanged, pairwise, switchMap, tap } from 'rxjs/operators';
 import { userRolesOptions } from 'src/app/shared/constants/user-roles-options';
 import { DIALOG_TYPES } from 'src/app/shared/enums/dialog.enum';
 import { DialogOptions } from 'src/app/shared/model/dialog-model';
@@ -27,14 +26,13 @@ export class UserDetailsComponent implements OnInit, AfterViewInit {
  
 
   defaultValue: any; 
-  onGoingChange = false;
+  disabled = false;
   public userRolesOptions = userRolesOptions;
   public tableOptions = userDetailsPolicyTableOptions;
 
   ngOnInit(): void {
     this.defaultValue = this.userRolesOptions.find(role => role.value === this.data.user.role);
-    this.formControl.setValue(this.defaultValue);
-    this.formControl.markAsPristine();
+    this.setFormControlValueThenPristine(this.defaultValue);
   }
 
   ngAfterViewInit(): void {
@@ -54,17 +52,23 @@ export class UserDetailsComponent implements OnInit, AfterViewInit {
       this.dialog.openDialog(dialogOptions,
         () => {
           this.userService.editUserSubject.next(newUser);
-          this.formControl.setValue(event.currentValue);
-          this.formControl.markAsPristine();
+          this.setFormControlValueThenPristine(event.currentValue);
         },
         () => {
-          console.log('newUser', event.previousValue);
-          this.defaultValue = event.previousValue;
-          this.formControl.setValue(event.previousValue);
-          this.formControl.markAsPristine();
+          this.disabled = true;
+          this.defaultValue = {...event.previousValue};
+          this.setFormControlValueThenPristine(event.previousValue);
+          setTimeout(() => {
+            this.disabled = false;
+          });
         }
       );
     }
+  }
+
+  setFormControlValueThenPristine(value: any){
+    this.formControl.setValue(value);
+    this.formControl.markAsPristine();
   }
 
 

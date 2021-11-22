@@ -38,17 +38,14 @@ export class UsersService {
 
   users$ = combineLatest([this.editUser$.pipe(distinctUntilChanged()), this.userLists$])
   .pipe(
-    tap(data => console.log('before edit',  data)),
     map(([edit,users]) => {
       if(edit) {
         const userIndex = users.findIndex(u => u.email === edit.email);
         users[userIndex] = edit;
-        console.log('new user',users);
         return users;
       }
       return users;
-    }),
-    tap(data => console.log('after edit',  data)),
+    })
   )
 
   WithPolicies$ = this.policies$.pipe(

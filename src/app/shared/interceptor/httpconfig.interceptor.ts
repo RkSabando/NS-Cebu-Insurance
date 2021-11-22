@@ -33,7 +33,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                     reason: error && error.error && error.error.reason ? error.error.reason : '',
                     status: error.status
                 };
-                console.log('error ',data);
                 const dialogOptions: DialogOptions = {
                     type: DIALOG_TYPES.ERROR,
                     title: 'Error',

@@ -18,7 +18,6 @@ export class CustomDialogService {
     mainAction?: () => void | Promise<void>, 
     secondaryAction?: () => void
   ) {
-    console.log('dialogOptions', dialogOptions);
     const dialogRef = this.dialog.open(ModalComponent,
       {
         panelClass: 'custom-dialog',
