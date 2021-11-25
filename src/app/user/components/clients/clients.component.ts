@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BehaviorSubject,combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, exhaustMap, map } from 'rxjs/operators';
+import { BehaviorSubject,combineLatest, EMPTY, forkJoin, of, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, exhaustMap, map, tap, toArray, withLatestFrom } from 'rxjs/operators';
 import { clientFilters } from 'src/app/shared/constants/clients-filter';
 import { User } from 'src/app/shared/model/user-model';
 
@@ -32,20 +32,19 @@ export class ClientsComponent {
   filters = clientFilters;
   tableOptions = clientTableOptions;
 
-  filterByText$ = this.searchText$.pipe(
+  textFilter$ = this.searchText$.pipe(
     debounceTime(300),
     distinctUntilChanged(),
-    exhaustMap(
-      text=> {
-        return this.users$.pipe(
-          map( (user: User[]) => {
-            return user.filter( (u: User) => {
-              return text ? (u.name.toLocaleLowerCase().startsWith(text.toLocaleLowerCase()) || u.email.toLocaleLowerCase().startsWith(text.toLocaleLowerCase()) ): true;
-            })
-          })
-        )
-      }
-    )
+    exhaustMap(text => of(text))
+  );
+
+  filterByText$ = combineLatest([this.textFilter$,this.users$])
+  .pipe(
+    map( ([text, user] : [string,User[]]) => {
+      return user.filter( (u: User) => {
+        return text ? ( u.name.toLowerCase().startsWith( text.toLowerCase()) || u.email.toLowerCase().startsWith(text.toLowerCase()) ): true;
+      })
+    })
   );
 
   changeFilter$ = this.currentFilter$.pipe(
@@ -90,13 +89,7 @@ export class ClientsComponent {
 
   constructor(
     private userService: UsersService
-  ) {
-    // this.userService.userDetails$.subscribe(
-   
-
-    // )
-
-   }
+  ) {}
 
   searchEvent(text: string): void {
     this.searchSubject.next(text);

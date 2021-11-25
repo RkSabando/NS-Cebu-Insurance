@@ -32,11 +32,10 @@ export class UsersService {
 
   userLists$ = this.http.get<User[]>(API_ROUTES.USERS).pipe(
     shareReplay(1),
-    take(1),
     map( (users: any) => users.clients as User[] )
   );
 
-  users$ = combineLatest([this.editUser$.pipe(distinctUntilChanged()), this.userLists$])
+  users$ = combineLatest([this.editUser$, this.userLists$])
   .pipe(
     map(([edit,users]) => {
       if(edit) {
@@ -82,10 +81,6 @@ export class UsersService {
       policies: withPolicy.find( p => p.email === user.email ) ?? null
     }) as UserDetails)
   )
-    
-  // combineLatest(
-  //   [this.getUserDetails$, ]
-  // )
   .subscribe( (data: UserDetails) => {
     this.dialog.open(UserDetailsComponent,{
       data: data,

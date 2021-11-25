@@ -70,7 +70,4 @@ export class UserDetailsComponent implements OnInit, AfterViewInit {
     this.formControl.setValue(value);
     this.formControl.markAsPristine();
   }
-
-
-
 }
